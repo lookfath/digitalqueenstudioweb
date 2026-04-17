@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Queen Studio | Luxe & Innovation</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontsource Fonts (Playfair Display for luxury, Lato for readability) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-blue': '#0f172a',
+                        'deep-gold': '#d4af37',
+                        'light-gold': '#f3e5ab',
+                        'dark-gold': '#aa8c2c',
+                    },
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+                        'zoom-in': 'zoomIn 1.2s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' }
+                        },
+                        glowPulse: {
+                            '0%, 100%': { filter: 'drop-shadow(0 0 15px rgba(212, 175, 55, 0.4))' },
+                            '50%': { filter: 'drop-shadow(0 0 35px rgba(212, 175, 55, 0.8)) drop-shadow(0 0 60px rgba(212, 175, 55, 0.4))' },
+                        },
+                        zoomIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.5)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Utilities */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Gold Gradient Text */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Intro Screen Transitions */
+        #intro-screen {
+            transition: opacity 1s ease-out, visibility 1s;
+        }
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        /* Logo Animation - Enhanced Glow & Float */
+        .logo-container {
+            animation: glowPulse 3s ease-in-out infinite, float 6s ease-in-out infinite;
+        }
+
+        /* Logo Zoom Entrance */
+        .logo-zoom {
+            animation: zoomIn 1.2s ease-out forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+
+        /* Form Success/Error States */
+        .form-success {
+            border-color: #22c55e !important;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+        .form-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0,0,0,0.3);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            backdrop-filter: blur(10px);
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            background: rgba(34, 197, 94, 0.9);
+            border: 1px solid #22c55e;
+        }
+        .toast.error {
+            background: rgba(239, 68, 68, 0.9);
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-deep-gold selection:text-black">
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="toast"></div>
+
+    <!-- SECTION 1: INTRO SCREEN -->
+    <section id="intro-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-black via-royal-blue to-black text-center px-4">
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden opacity-20">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-deep-gold rounded-full filter blur-[100px] animate-pulse-slow"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-900 rounded-full filter blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <!-- Logo Container with Enhanced Animation - MUCH LARGER -->
+            <div class="logo-container logo-zoom mb-8">
+                <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Digital Queen Studio Logo" class="w-48 md:w-72 lg:w-96 object-contain drop-shadow-2xl mx-auto">
+            </div>
+
+            <!-- Brand Name -->
+            <h1 class="text-3xl md:text-5xl lg:text-7xl font-serif font-bold tracking-wider mb-2 text-white animate-[zoomIn_1.5s_ease-out_0.5s_both]">
+                DIGITAL <span class="text-gradient-gold">QUEEN</span> STUDIO
+            </h1>
+            <p class="text-gray-400 uppercase tracking-[0.3em] text-sm md:text-base mb-12 animate-[zoomIn_1.5s_ease-out_0.8s_both]">L'Excellence Digitale</p>
+
+            <!-- Enter Button -->
+            <button id="enter-btn" class="group relative px-10 py-4 bg-transparent overflow-hidden rounded-full border-2 border-deep-gold transition-all duration-300 hover:scale-110 animate-[zoomIn_1.5s_ease-out_1.1s_both]">
+                <div class="absolute inset-0 w-0 bg-deep-gold transition-all duration-[250ms] ease-out group-hover:w-full opacity-20"></div>
+                <span class="relative text-deep-gold font-bold tracking-widest group-hover:text-white transition-colors text-lg">ENTRER</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- SECTION 2: MAIN SITE -->
+    <main id="main-site" class="opacity-0 transition-opacity duration-1000">
+        
+        <!-- Navigation -->
+        <nav class="fixed w-full z-40 top-0 left-0 bg-black/80 backdrop-blur-md border-b border-white/10 transition-all duration-300" id="navbar">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#" class="flex items-center gap-3">
+                    <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Logo" class="h-12 w-12 object-contain">
+                    <span class="font-serif text-xl font-bold hidden md:block">DQS</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#hero" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">Accueil</a>
+                    <a href="#about" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">À Propos</a>
+                    <a href="#services" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">Services</a>
+                    <a href="#contact" class="px-6 py-2 border border-deep-gold text-deep-gold rounded-full hover:bg-deep-gold hover:text-black transition-all duration-300 font-bold text-sm uppercase">Contact</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden bg-black border-t border-white/10 absolute w-full">
+                <div class="flex flex-col p-6 space-y-4 text-center">
+                    <a href="#hero" class="block text-gray-300 hover:text-deep-gold py-2">Accueil</a>
+                    <a href="#about" class="block text-gray-300 hover:text-deep-gold py-2">À Propos</a>
+                    <a href="#services" class="block text-gray-300 hover:text-deep-gold py-2">Services</a>
+                    <a href="#contact" class="block text-deep-gold font-bold py-2">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+            <!-- Background Image/Gradient -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-[#050505]"></div>
+
+            <div class="container mx-auto px-6 relative z-10 text-center">
+                <span class="reveal inline-block py-1 px-3 border border-deep-gold/50 rounded-full text-deep-gold text-xs tracking-[0.2em] uppercase mb-6 bg-black/30 backdrop-blur-sm">
+                    Agence Digitale Premium
+                </span>
+                <h1 class="reveal text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-6 leading-tight">
+                    Élevez Votre <br>
+                    <span class="text-gradient-gold">Présence Digitale</span>
+                </h1>
+                <p class="reveal text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                    Nous transformons vos idées en expériences numériques d'exception. Design, technologie et stratégie pour les marques qui osent l'excellence.
+                </p>
+                
+                <div class="reveal flex flex-col md:flex-row gap-4 justify-center items-center">
+                    <a href="#contact" class="px-8 py-4 bg-deep-gold text-black font-bold rounded-full hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transform hover:-translate-y-1">
+                        Démarrer un projet
+                    </a>
+                    <a href="https://wa.me/2250160894865" target="_blank" class="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
+                        <i class="fab fa-whatsapp text-green-500 text-xl"></i>
+                        <span>Discuter sur WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 bg-[#050505] relative">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="reveal relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-deep-gold to-blue-900 rounded-2xl opacity-30 blur-lg"></div>
+                        <img src="file_000000003e74720ab58ce8e876da257c.png" alt="Bureau Luxe" class="relative rounded-2xl border border-white/10 shadow-2xl w-full object-cover h-[400px] grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    
+                    <div class="reveal">
+                        <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">L'Art de la <span class="text-deep-gold">Perfection</span></h2>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            Chez <strong>Digital Queen Studio</strong>, nous ne créons pas simplement des sites web ou des logos. Nous façonnons des identités numériques qui résonnent avec l'élégance et la performance.
+                        </p>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            Notre approche combine une esthétique haut de gamme avec des solutions techniques robustes. Que vous soyez une startup ambitieuse ou une entreprise établie, nous apportons la touche royale à votre communication.
+                        </p>
+                        
+                        <div class="grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
+                            <div>
+                                <span class="block text-3xl font-bold text-deep-gold">100%</span>
+                                <span class="text-sm text-gray-500 uppercase">Sur Mesure</span>
+                            </div>
+                            <div>
+                                <span class="block text-3xl font-bold text-deep-gold">24/7</span>
+                                <span class="text-sm text-gray-500 uppercase">Support</span>
+                            </div>
+                            <div>
+                                <span class="block text-3xl font-bold text-deep-gold">Top</span>
+                                <span class="text-sm text-gray-500 uppercase">Qualité</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4">Nos <span class="text-gradient-gold">Services</span></h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Des solutions complètes pour dominer votre marché.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Service 1 -->
+                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
+                            <i class="fas fa-laptop-code text-2xl text-deep-gold group-hover:text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 font-serif">Sites Web</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Développement de sites vitrines et e-commerce modernes, rapides et optimisés SEO.</p>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 100ms;">
+                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
+                            <i class="fas fa-paint-brush text-2xl text-deep-gold group-hover:text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 font-serif">Design Graphique</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Création de logos, chartes graphiques et visuels publicitaires percutants.</p>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 200ms;">
+                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
+                            <i class="fas fa-bullhorn text-2xl text-deep-gold group-hover:text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 font-serif">Marketing Digital</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Gestion des réseaux sociaux, campagnes publicitaires et stratégie de contenu.</p>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 300ms;">
+                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
+                            <i class="fas fa-tools text-2xl text-deep-gold group-hover:text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 font-serif">Maintenance</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Réparation et maintenance d'ordinateurs et smartphones pour une performance optimale.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-[#050505] relative overflow-hidden">
+            <!-- Decorative Glow -->
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-deep-gold/5 rounded-full filter blur-[100px]"></div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mx-auto glass-card rounded-3xl p-8 md:p-12 border border-white/5">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Contactez la <span class="text-deep-gold">Reine</span></h2>
+                        <p class="text-gray-400">Prêt à lancer votre projet ? Écrivez-nous.</p>
+                    </div>
+
+                    <!-- FORMULAIRE CORRIGÉ - ID ajouté, pas d'action, pas de méthode -->
+                    <form id="contact-form" class="space-y-6" novalidate>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm text-gray-400 uppercase tracking-wider">Nom Complet</label>
+                                <input type="text" id="contact-name" name="from_name" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="Votre nom">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm text-gray-400 uppercase tracking-wider">Email</label>
+                                <input type="email" id="contact-email" name="from_email" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="votre@email.com">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-gray-400 uppercase tracking-wider">Message</label>
+                            <textarea rows="4" id="contact-message" name="message" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="Parlez-nous de votre projet..."></textarea>
+                        </div>
+                        
+                        <!-- Bouton avec état de chargement -->
+                        <button type="submit" id="submit-btn" class="w-full py-4 bg-gradient-to-r from-deep-gold to-yellow-600 text-black font-bold rounded-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center gap-2">
+                            <span id="btn-text">Envoyer le message</span>
+                            <span id="btn-spinner" class="spinner hidden"></span>
+                        </button>
+                    </form>
+
+                    <div class="mt-10 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-deep-gold">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">Discussion directe</p>
+                                <a href="https://wa.me/2250160894865" class="font-bold hover:text-deep-gold transition-colors">+225 0160894865</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-deep-gold">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-400">Email</p>
+                                <p class="font-bold">contact@digitalqueenstudio.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black py-10 border-t border-white/10">
+            <div class="container mx-auto px-6 text-center">
+                <div class="flex justify-center items-center gap-2 mb-6">
+                    <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Logo Footer" class="h-8 w-8 object-contain opacity-80">
+                    <span class="font-serif text-lg font-bold text-gray-300">Digital Queen Studio</span>
+                </div>
+                <p class="text-gray-500 text-sm mb-6">
+                    &copy; 2026 Digital Queen Studio. Tous droits réservés.
+                </p>
+                <div class="flex justify-center gap-6">
+                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ==========================================
+            // 1. INITIALISATION EMAILJS
+            // Remplacez "YOUR_PUBLIC_KEY" par votre clé publique EmailJS
+            // ==========================================
+            emailjs.init("lHM2RrC0cYnSy36Mz");
+
+            // ==========================================
+            // 2. INTRO SCREEN LOGIC
+            // ==========================================
+            const enterBtn = document.getElementById('enter-btn');
+            const introScreen = document.getElementById('intro-screen');
+            const mainSite = document.getElementById('main-site');
+
+            enterBtn.addEventListener('click', () => {
+                // Fade out intro screen
+                introScreen.classList.add('fade-out');
+                
+                // Show main site with fade in
+                setTimeout(() => {
+                    mainSite.classList.remove('opacity-0');
+                    // Remove intro from DOM after transition to save resources
+                    setTimeout(() => {
+                        introScreen.style.display = 'none';
+                    }, 1000);
+                }, 500);
+            });
+
+            // ==========================================
+            // 3. SCROLL REVEAL ANIMATION
+            // ==========================================
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 150;
+
+                revealElements.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            // Trigger once on load
+            revealOnScroll();
+
+            // ==========================================
+            // 4. MOBILE MENU TOGGLE
+            // ==========================================
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                // Toggle icon between bars and times
+                const icon = mobileBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            });
+
+            // Close mobile menu when clicking a link
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    const icon = mobileBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // ==========================================
+            // 5. NAVBAR BACKGROUND ON SCROLL
+            // ==========================================
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-black/90', 'shadow-lg');
+                } else {
+                    navbar.classList.remove('bg-black/90', 'shadow-lg');
+                }
+            });
+
+            // ==========================================
+            // 6. FORMULAIRE DE CONTACT - EMAILJS
+            // Envoi AJAX sans rechargement ni redirection
+            // ==========================================
+            const contactForm = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+            const toast = document.getElementById('toast');
+
+            // Fonction pour afficher les notifications toast
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                
+                // Masquer après 4 secondes
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+
+            // Validation des champs du formulaire
+            function validateForm() {
+                const name = document.getElementById('contact-name');
+                const email = document.getElementById('contact-email');
+                const message = document.getElementById('contact-message');
+                let isValid = true;
+
+                // Reset styles
+                [name, email, message].forEach(field => {
+                    field.classList.remove('form-error');
+                });
+
+                if (!name.value.trim()) {
+                    name.classList.add('form-error');
+                    isValid = false;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email.value.trim())) {
+                    email.classList.add('form-error');
+                    isValid = false;
+                }
+
+                if (!message.value.trim()) {
+                    message.classList.add('form-error');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Gestion de la soumission du formulaire
+            contactForm.addEventListener('submit', function(e) {
+                // IMPORTANT: Empêche le rechargement de la page
+                e.preventDefault();
+
+                // Validation des champs
+                if (!validateForm()) {
+                    showToast('Veuillez remplir tous les champs correctement.', 'error');
+                    return;
+                }
+
+                // Afficher le chargement
+                btnText.textContent = 'Envoi en cours...';
+                btnSpinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+                // Envoi via EmailJS
+                // Remplacez "YOUR_SERVICE_ID" et "YOUR_TEMPLATE_ID" par vos identifiants EmailJS
+                emailjs.sendForm("service_w7fu23d", "template_7by1f3d", this)
+                    .then(() => {
+                        // Succès
+                        showToast('✅ Message envoyé avec succès ! Nous vous répondrons bientôt.', 'success');
+                        contactForm.reset();
+                        
+                        // Reset styles
+                        document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(field => {
+                            field.classList.remove('form-success', 'form-error');
+                        });
+                    })
+                    .catch((error) => {
+                        // Erreur
+                        console.error('EmailJS Error:', error);
+                        showToast('❌ Erreur lors de l\'envoi. Veuillez réessayer.', 'error');
+                    })
+                    .finally(() => {
+                        // Rétablir le bouton
+                        btnText.textContent = 'Envoyer le message';
+                        btnSpinner.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    });
+            });
+
+            // Supprimer les styles d'erreur quand l'utilisateur commence à taper
+            document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(field => {
+                field.addEventListener('input', () => {
+                    field.classList.remove('form-error');
+                });
+            });
+
+            // ==========================================
+            // 7. SMOOTH SCROLL POUR LES LIENS INTERNES
+            // ==========================================
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
