@@ -8,12 +8,12 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fontsource Fonts (Playfair Display for luxury, Lato for readability) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- EmailJS SDK -->
@@ -28,6 +28,8 @@
                         'deep-gold': '#d4af37',
                         'light-gold': '#f3e5ab',
                         'dark-gold': '#aa8c2c',
+                        'accent-orange': '#ff6b6b',
+                        'accent-pink': '#f093fb'
                     },
                     fontFamily: {
                         sans: ['Lato', 'sans-serif'],
@@ -35,15 +37,17 @@
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float 8s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'shimmer': 'shimmer 2.5s linear infinite',
                         'glow-pulse': 'glowPulse 3s ease-in-out infinite',
                         'zoom-in': 'zoomIn 1.2s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                            '50%': { transform: 'translateY(-15px)' },
                         },
                         shimmer: {
                             '0%': { backgroundPosition: '-1000px 0' },
@@ -56,6 +60,10 @@
                         zoomIn: {
                             '0%': { opacity: '0', transform: 'scale(0.5)' },
                             '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
@@ -64,83 +72,225 @@
     </script>
 
     <style>
-        /* Custom Styles & Utilities */
+        /* ===== BASE STYLES ===== */
         body {
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Gold Gradient Text */
+        /* ===== GOLD GRADIENT TEXT ===== */
         .text-gradient-gold {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
         }
 
-        /* Glassmorphism Card */
+        /* ===== GLASSMORPHISM CARD ===== */
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 12px 48px rgba(212, 175, 55, 0.15);
         }
 
-        /* Scroll Reveal Animation Classes */
+        /* ===== SCROLL REVEAL ===== */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Intro Screen Transitions */
+        /* ===== INTRO SCREEN ===== */
         #intro-screen {
             transition: opacity 1s ease-out, visibility 1s;
         }
         .fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
         
-        /* Logo Animation - Enhanced Glow & Float */
-        .logo-container {
-            animation: glowPulse 3s ease-in-out infinite, float 6s ease-in-out infinite;
+        /* ===== LOGO FLOATING ANIMATION ✨ ===== */
+        .logo-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .logo-glow {
+            animation: glowPulse 4s ease-in-out infinite;
         }
 
-        /* Logo Zoom Entrance */
-        .logo-zoom {
-            animation: zoomIn 1.2s ease-out forwards;
+        /* ===== SERVICE CARD HOVER EFFECTS ===== */
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 80px rgba(212, 175, 55, 0.3);
+        }
+        .service-card .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .service-card:hover .card-img {
+            transform: scale(1.1);
+        }
+        .service-card .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 50%, transparent 100%);
+            transition: background 0.3s;
+        }
+        .service-card:hover .card-overlay {
+            background: linear-gradient(to top, rgba(5,5,5,0.98) 0%, rgba(212,175,55,0.1) 100%);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* ===== MODAL STYLES ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
         }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 4px;
+        .modal-box {
+            background: linear-gradient(135deg, #0f172a 0%, #050505 100%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 540px;
+            width: 100%;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.2);
+        }
+        .modal-overlay.open .modal-box {
+            transform: scale(1);
         }
 
-        /* Form Success/Error States */
-        .form-success {
-            border-color: #22c55e !important;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        /* ===== PRICING TABLE ===== */
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        .form-error {
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        .price-item:last-child {
+            border-bottom: none;
         }
 
-        /* Loading Spinner */
+        /* ===== WHATSAPP FLOATING BUTTON ===== */
+        .wa-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 500;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+            animation: float 3s ease-in-out infinite;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .wa-float:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 35px rgba(37, 211, 102, 0.8);
+        }
+
+        /* ===== VIDEO SECTION ===== */
+        .video-wrapper {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.15);
+        }
+        .video-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            border-radius: 26px;
+            background: linear-gradient(135deg, rgba(212,175,55,0.5), transparent, rgba(212,175,55,0.3));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .video-wrapper:hover::before {
+            opacity: 1;
+        }
+
+        /* ===== BUTTON SHIMMER EFFECT ===== */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -75%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 3s infinite;
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(to bottom, #d4af37, #aa8c2c); 
+            border-radius: 4px; 
+        }
+
+        /* ===== FORM STATES ===== */
+        .form-success { 
+            border-color: #22c55e !important; 
+            box-shadow: 0 0 15px rgba(34,197,94,0.4); 
+        }
+        .form-error { 
+            border-color: #ef4444 !important; 
+            box-shadow: 0 0 15px rgba(239,68,68,0.4); 
+        }
+
+        /* ===== LOADING SPINNER ===== */
         .spinner {
             display: inline-block;
             width: 20px;
@@ -150,101 +300,149 @@
             border-top-color: #000;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Toast Notification */
+        /* ===== TOAST NOTIFICATION ===== */
         .toast {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 9999;
-            padding: 16px 24px;
-            border-radius: 12px;
+            padding: 16px 28px;
+            border-radius: 16px;
             color: white;
-            font-weight: bold;
-            transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            backdrop-filter: blur(10px);
+            font-weight: 600;
+            transform: translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            backdrop-filter: blur(12px);
+            border: 1px solid;
         }
-        .toast.show {
-            transform: translateX(0);
+        .toast.show { transform: translateX(0); }
+        .toast.success { 
+            background: rgba(34,197,94,0.95); 
+            border-color: #22c55e;
+            box-shadow: 0 8px 30px rgba(34,197,94,0.4);
         }
-        .toast.success {
-            background: rgba(34, 197, 94, 0.9);
-            border: 1px solid #22c55e;
+        .toast.error { 
+            background: rgba(239,68,68,0.95); 
+            border-color: #ef4444;
+            box-shadow: 0 8px 30px rgba(239,68,68,0.4);
         }
-        .toast.error {
-            background: rgba(239, 68, 68, 0.9);
-            border: 1px solid #ef4444;
+
+        /* ===== STAT CARD ===== */
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: rgba(212,175,55,0.05);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            background: rgba(212,175,55,0.1);
+            transform: translateY(-3px);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .modal-box { padding: 30px 24px; }
+            .wa-float { 
+                bottom: 20px; 
+                right: 20px; 
+                width: 54px; 
+                height: 54px; 
+                font-size: 26px; 
+            }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-deep-gold selection:text-black">
 
-    <!-- Toast Notification Container -->
+    <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
-    <!-- SECTION 1: INTRO SCREEN -->
+    <!-- WhatsApp Floating Button (Global) -->
+    <a href="https://wa.me/2250160894865?text=Bonjour%20Digital%20Queen%20Studio%2C%20je%20souhaite%20en%20savoir%20plus%20sur%20vos%20services." 
+       target="_blank" 
+       class="wa-float" 
+       title="Discuter sur WhatsApp"
+       aria-label="Contactez-nous sur WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ============================
+         SECTION 1: INTRO SCREEN
+    ============================= -->
     <section id="intro-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-black via-royal-blue to-black text-center px-4">
         
-        <!-- Animated Background Elements -->
+        <!-- Animated Background -->
         <div class="absolute inset-0 overflow-hidden opacity-20">
             <div class="absolute top-10 left-10 w-64 h-64 bg-deep-gold rounded-full filter blur-[100px] animate-pulse-slow"></div>
             <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-900 rounded-full filter blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-deep-gold/10 rounded-full filter blur-[150px]"></div>
         </div>
 
         <div class="relative z-10 flex flex-col items-center">
-            <!-- Logo Container with Enhanced Animation - MUCH LARGER -->
-            <div class="logo-container logo-zoom mb-8">
-                <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Digital Queen Studio Logo" class="w-48 md:w-72 lg:w-96 object-contain drop-shadow-2xl mx-auto">
+            <!-- ✨ LOGO avec animation FLOAT (monte/descend) + GLOW -->
+            <div class="logo-float logo-glow mb-8 animate-[zoomIn_1.2s_ease-out_forwards]">
+                <img src="logodigitalqueen.png" 
+                     alt="Digital Queen Studio Logo" 
+                     class="w-48 md:w-72 lg:w-96 object-contain drop-shadow-2xl mx-auto">
             </div>
 
-            <!-- Brand Name -->
-            <h1 class="text-3xl md:text-5xl lg:text-7xl font-serif font-bold tracking-wider mb-2 text-white animate-[zoomIn_1.5s_ease-out_0.5s_both]">
+            <h1 class="text-3xl md:text-5xl lg:text-7xl font-serif font-bold tracking-wider mb-3 text-white animate-[zoomIn_1.5s_ease-out_0.5s_both]">
                 DIGITAL <span class="text-gradient-gold">QUEEN</span> STUDIO
             </h1>
-            <p class="text-gray-400 uppercase tracking-[0.3em] text-sm md:text-base mb-12 animate-[zoomIn_1.5s_ease-out_0.8s_both]">L'Excellence Digitale</p>
+            <p class="text-gray-400 uppercase tracking-[0.35em] text-xs md:text-sm mb-12 animate-[zoomIn_1.5s_ease-out_0.8s_both]">
+                L'Excellence Digitale
+            </p>
 
-            <!-- Enter Button -->
-            <button id="enter-btn" class="group relative px-10 py-4 bg-transparent overflow-hidden rounded-full border-2 border-deep-gold transition-all duration-300 hover:scale-110 animate-[zoomIn_1.5s_ease-out_1.1s_both]">
-                <div class="absolute inset-0 w-0 bg-deep-gold transition-all duration-[250ms] ease-out group-hover:w-full opacity-20"></div>
-                <span class="relative text-deep-gold font-bold tracking-widest group-hover:text-white transition-colors text-lg">ENTRER</span>
+            <button id="enter-btn" 
+                    class="group relative px-12 py-4 bg-transparent overflow-hidden rounded-full border-2 border-deep-gold transition-all duration-300 hover:scale-110 animate-[zoomIn_1.5s_ease-out_1.1s_both] btn-shimmer">
+                <div class="absolute inset-0 w-0 bg-deep-gold/20 transition-all duration-300 ease-out group-hover:w-full rounded-full"></div>
+                <span class="relative text-deep-gold font-bold tracking-[0.25em] group-hover:text-white transition-colors text-lg">ENTRER</span>
             </button>
         </div>
     </section>
 
-    <!-- SECTION 2: MAIN SITE -->
+    <!-- ============================
+         SECTION 2: MAIN SITE
+    ============================= -->
     <main id="main-site" class="opacity-0 transition-opacity duration-1000">
-        
+
         <!-- Navigation -->
         <nav class="fixed w-full z-40 top-0 left-0 bg-black/80 backdrop-blur-md border-b border-white/10 transition-all duration-300" id="navbar">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="#" class="flex items-center gap-3">
-                    <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Logo" class="h-12 w-12 object-contain">
-                    <span class="font-serif text-xl font-bold hidden md:block">DQS</span>
+                <a href="#hero" class="flex items-center gap-3">
+                    <!-- Logo avec floating -->
+                    <div class="logo-float">
+                        <img src="logodigitalqueen.png" 
+                             alt="Logo" 
+                             class="h-12 w-12 object-contain logo-glow">
+                    </div>
+                    <span class="font-serif text-xl font-bold hidden md:block text-gradient-gold">DQS</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#hero" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">Accueil</a>
                     <a href="#about" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">À Propos</a>
                     <a href="#services" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">Services</a>
+                    <a href="#video" class="text-sm uppercase tracking-widest hover:text-deep-gold transition-colors">Vidéo</a>
                     <a href="#contact" class="px-6 py-2 border border-deep-gold text-deep-gold rounded-full hover:bg-deep-gold hover:text-black transition-all duration-300 font-bold text-sm uppercase">Contact</a>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-btn" class="md:hidden text-white text-2xl">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
-            <!-- Mobile Menu Dropdown -->
+            <!-- Mobile Menu -->
             <div id="mobile-menu" class="hidden md:hidden bg-black border-t border-white/10 absolute w-full">
                 <div class="flex flex-col p-6 space-y-4 text-center">
                     <a href="#hero" class="block text-gray-300 hover:text-deep-gold py-2">Accueil</a>
                     <a href="#about" class="block text-gray-300 hover:text-deep-gold py-2">À Propos</a>
                     <a href="#services" class="block text-gray-300 hover:text-deep-gold py-2">Services</a>
+                    <a href="#video" class="block text-gray-300 hover:text-deep-gold py-2">Vidéo</a>
                     <a href="#contact" class="block text-deep-gold font-bold py-2">Contact</a>
                 </div>
             </div>
@@ -252,28 +450,33 @@
 
         <!-- Hero Section -->
         <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-            <!-- Background Image/Gradient -->
             <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
             <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-[#050505]"></div>
+            
+            <!-- Animated orbs -->
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-deep-gold/10 rounded-full blur-[100px] animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-900/20 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay:1.5s;"></div>
 
             <div class="container mx-auto px-6 relative z-10 text-center">
-                <span class="reveal inline-block py-1 px-3 border border-deep-gold/50 rounded-full text-deep-gold text-xs tracking-[0.2em] uppercase mb-6 bg-black/30 backdrop-blur-sm">
-                    Agence Digitale Premium
+                <span class="reveal inline-block py-1 px-4 border border-deep-gold/50 rounded-full text-deep-gold text-xs tracking-[0.2em] uppercase mb-6 bg-black/30 backdrop-blur-sm">
+                    ✦ Agence Digitale Premium ✦
                 </span>
                 <h1 class="reveal text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-6 leading-tight">
                     Élevez Votre <br>
                     <span class="text-gradient-gold">Présence Digitale</span>
                 </h1>
-                <p class="reveal text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                <p class="reveal text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
                     Nous transformons vos idées en expériences numériques d'exception. Design, technologie et stratégie pour les marques qui osent l'excellence.
                 </p>
                 
-                <div class="reveal flex flex-col md:flex-row gap-4 justify-center items-center">
-                    <a href="#contact" class="px-8 py-4 bg-deep-gold text-black font-bold rounded-full hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transform hover:-translate-y-1">
-                        Démarrer un projet
+                <div class="reveal flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-full hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300 transform hover:-translate-y-1 btn-shimmer">
+                        🚀 Démarrer un projet
                     </a>
-                    <a href="https://wa.me/2250160894865" target="_blank" class="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
-                        <i class="fab fa-whatsapp text-green-500 text-xl"></i>
+                    <a href="https://wa.me/2250160894865?text=Bonjour%20Digital%20Queen%20Studio%2C%20je%20souhaite%20démarrer%20un%20projet." 
+                       target="_blank" 
+                       class="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
+                        <i class="fab fa-whatsapp text-green-400 text-xl"></i>
                         <span>Discuter sur WhatsApp</span>
                     </a>
                 </div>
@@ -285,31 +488,35 @@
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <div class="reveal relative">
-                        <div class="absolute -inset-4 bg-gradient-to-r from-deep-gold to-blue-900 rounded-2xl opacity-30 blur-lg"></div>
-                        <img src="file_000000003e74720ab58ce8e876da257c.png" alt="Bureau Luxe" class="relative rounded-2xl border border-white/10 shadow-2xl w-full object-cover h-[400px] grayscale hover:grayscale-0 transition-all duration-700">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-deep-gold to-blue-900 rounded-2xl opacity-20 blur-xl"></div>
+                        <img src="assiseaubureau.jpeg" 
+                             alt="Bureau Luxe Digital Queen Studio" 
+                             class="relative rounded-2xl border border-white/10 shadow-2xl w-full object-cover h-[400px] grayscale hover:grayscale-0 transition-all duration-700">
                     </div>
                     
                     <div class="reveal">
-                        <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">L'Art de la <span class="text-deep-gold">Perfection</span></h2>
+                        <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">
+                            L'Art de la <span class="text-gradient-gold">Perfection</span>
+                        </h2>
                         <p class="text-gray-400 mb-6 leading-relaxed">
-                            Chez <strong>Digital Queen Studio</strong>, nous ne créons pas simplement des sites web ou des logos. Nous façonnons des identités numériques qui résonnent avec l'élégance et la performance.
+                            Chez <strong class="text-white">Digital Queen Studio</strong>, nous ne créons pas simplement des sites web ou des logos. Nous façonnons des identités numériques qui résonnent avec l'élégance et la performance.
                         </p>
                         <p class="text-gray-400 mb-8 leading-relaxed">
                             Notre approche combine une esthétique haut de gamme avec des solutions techniques robustes. Que vous soyez une startup ambitieuse ou une entreprise établie, nous apportons la touche royale à votre communication.
                         </p>
                         
                         <div class="grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
-                            <div>
+                            <div class="stat-card">
                                 <span class="block text-3xl font-bold text-deep-gold">100%</span>
-                                <span class="text-sm text-gray-500 uppercase">Sur Mesure</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wider mt-1 block">Sur Mesure</span>
                             </div>
-                            <div>
+                            <div class="stat-card">
                                 <span class="block text-3xl font-bold text-deep-gold">24/7</span>
-                                <span class="text-sm text-gray-500 uppercase">Support</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wider mt-1 block">Support</span>
                             </div>
-                            <div>
+                            <div class="stat-card">
                                 <span class="block text-3xl font-bold text-deep-gold">Top</span>
-                                <span class="text-sm text-gray-500 uppercase">Qualité</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wider mt-1 block">Qualité</span>
                             </div>
                         </div>
                     </div>
@@ -317,49 +524,202 @@
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section id="services" class="py-24 bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
+        <!-- ============================
+             SERVICES SECTION - AMÉLIORÉE ✨
+        ============================= -->
+        <section id="services" class="py-24 bg-gradient-to-b from-[#050505] to-[#080810]">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16 reveal">
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4">Nos <span class="text-gradient-gold">Services</span></h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">Des solutions complètes pour dominer votre marché.</p>
+                    <span class="inline-block py-1 px-4 border border-deep-gold/30 rounded-full text-deep-gold text-xs tracking-widest uppercase mb-4">✦ Ce que nous faisons ✦</span>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4">
+                        Nos <span class="text-gradient-gold">Services</span>
+                    </h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        Des solutions complètes pour dominer votre marché digital. Cliquez sur un service pour voir les tarifs.
+                    </p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Service 1 -->
-                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group">
-                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
-                            <i class="fas fa-laptop-code text-2xl text-deep-gold group-hover:text-black"></i>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Service 1: Création de Logo -->
+                    <div class="reveal service-card glass-card" onclick="openModal('logo')" style="transition-delay:0ms;">
+                        <div class="overflow-hidden rounded-t-2xl">
+                            <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Création de Logo Professionnel" 
+                                 class="card-img">
                         </div>
-                        <h3 class="text-xl font-bold mb-3 font-serif">Sites Web</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Développement de sites vitrines et e-commerce modernes, rapides et optimisés SEO.</p>
+                        <div class="card-overlay"></div>
+                        <div class="relative p-6">
+                            <div class="w-12 h-12 bg-deep-gold/10 border border-deep-gold/30 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-crown text-xl text-deep-gold"></i>
+                            </div>
+                            <h3 class="text-lg font-bold font-serif mb-2">Création de Logo</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Logos uniques, mémorables et adaptés à votre identité de marque.
+                            </p>
+                            <div class="flex gap-2">
+                                <button onclick="event.stopPropagation(); openModal('logo')" 
+                                        class="flex-1 py-2 text-xs font-bold border border-deep-gold/40 text-deep-gold rounded-lg hover:bg-deep-gold/10 transition-colors">
+                                    Voir les tarifs
+                                </button>
+                                <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Création%20de%20Logo." 
+                                   target="_blank" 
+                                   onclick="event.stopPropagation()"
+                                   class="flex-1 py-2 text-xs font-bold bg-gradient-to-r from-deep-gold to-yellow-500 text-black rounded-lg hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all text-center flex items-center justify-center gap-1">
+                                    <i class="fab fa-whatsapp"></i> Commander
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Service 2 -->
-                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 100ms;">
-                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
-                            <i class="fas fa-paint-brush text-2xl text-deep-gold group-hover:text-black"></i>
+                    <!-- Service 2: Création de Site Web -->
+                    <div class="reveal service-card glass-card" onclick="openModal('web')" style="transition-delay:100ms;">
+                        <div class="overflow-hidden rounded-t-2xl">
+                            <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Création de Site Web Moderne" 
+                                 class="card-img">
                         </div>
-                        <h3 class="text-xl font-bold mb-3 font-serif">Design Graphique</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Création de logos, chartes graphiques et visuels publicitaires percutants.</p>
+                        <div class="card-overlay"></div>
+                        <div class="relative p-6">
+                            <div class="w-12 h-12 bg-deep-gold/10 border border-deep-gold/30 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-laptop-code text-xl text-deep-gold"></i>
+                            </div>
+                            <h3 class="text-lg font-bold font-serif mb-2">Création de Site Web</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Sites vitrines et e-commerce modernes, rapides et optimisés SEO.
+                            </p>
+                            <div class="flex gap-2">
+                                <button onclick="event.stopPropagation(); openModal('web')" 
+                                        class="flex-1 py-2 text-xs font-bold border border-deep-gold/40 text-deep-gold rounded-lg hover:bg-deep-gold/10 transition-colors">
+                                    Voir les tarifs
+                                </button>
+                                <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Création%20de%20Site%20Web." 
+                                   target="_blank" 
+                                   onclick="event.stopPropagation()"
+                                   class="flex-1 py-2 text-xs font-bold bg-gradient-to-r from-deep-gold to-yellow-500 text-black rounded-lg hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all text-center flex items-center justify-center gap-1">
+                                    <i class="fab fa-whatsapp"></i> Commander
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Service 3 -->
-                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 200ms;">
-                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
-                            <i class="fas fa-bullhorn text-2xl text-deep-gold group-hover:text-black"></i>
+                    <!-- Service 3: Branding & Identité Visuelle -->
+                    <div class="reveal service-card glass-card" onclick="openModal('branding')" style="transition-delay:200ms;">
+                        <div class="overflow-hidden rounded-t-2xl">
+                            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Branding et Identité Visuelle" 
+                                 class="card-img">
                         </div>
-                        <h3 class="text-xl font-bold mb-3 font-serif">Marketing Digital</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Gestion des réseaux sociaux, campagnes publicitaires et stratégie de contenu.</p>
+                        <div class="card-overlay"></div>
+                        <div class="relative p-6">
+                            <div class="w-12 h-12 bg-deep-gold/10 border border-deep-gold/30 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-paint-brush text-xl text-deep-gold"></i>
+                            </div>
+                            <h3 class="text-lg font-bold font-serif mb-2">Branding & Identité</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Charte graphique complète, couleurs, typographies et visuels de marque.
+                            </p>
+                            <div class="flex gap-2">
+                                <button onclick="event.stopPropagation(); openModal('branding')" 
+                                        class="flex-1 py-2 text-xs font-bold border border-deep-gold/40 text-deep-gold rounded-lg hover:bg-deep-gold/10 transition-colors">
+                                    Voir les tarifs
+                                </button>
+                                <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Branding%20%26%20Identité%20Visuelle." 
+                                   target="_blank" 
+                                   onclick="event.stopPropagation()"
+                                   class="flex-1 py-2 text-xs font-bold bg-gradient-to-r from-deep-gold to-yellow-500 text-black rounded-lg hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all text-center flex items-center justify-center gap-1">
+                                    <i class="fab fa-whatsapp"></i> Commander
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Service 4 -->
-                    <div class="reveal glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group" style="transition-delay: 300ms;">
-                        <div class="w-14 h-14 bg-deep-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-deep-gold transition-colors duration-300">
-                            <i class="fas fa-tools text-2xl text-deep-gold group-hover:text-black"></i>
+                    <!-- Service 4: Marketing Digital -->
+                    <div class="reveal service-card glass-card" onclick="openModal('marketing')" style="transition-delay:300ms;">
+                        <div class="overflow-hidden rounded-t-2xl">
+                            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Marketing Digital et Réseaux Sociaux" 
+                                 class="card-img">
                         </div>
-                        <h3 class="text-xl font-bold mb-3 font-serif">Maintenance</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Réparation et maintenance d'ordinateurs et smartphones pour une performance optimale.</p>
+                        <div class="card-overlay"></div>
+                        <div class="relative p-6">
+                            <div class="w-12 h-12 bg-deep-gold/10 border border-deep-gold/30 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-bullhorn text-xl text-deep-gold"></i>
+                            </div>
+                            <h3 class="text-lg font-bold font-serif mb-2">Marketing Digital</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Réseaux sociaux, publicités ciblées et stratégie de contenu efficace.
+                            </p>
+                            <div class="flex gap-2">
+                                <button onclick="event.stopPropagation(); openModal('marketing')" 
+                                        class="flex-1 py-2 text-xs font-bold border border-deep-gold/40 text-deep-gold rounded-lg hover:bg-deep-gold/10 transition-colors">
+                                    Voir les tarifs
+                                </button>
+                                <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Marketing%20Digital." 
+                                   target="_blank" 
+                                   onclick="event.stopPropagation()"
+                                   class="flex-1 py-2 text-xs font-bold bg-gradient-to-r from-deep-gold to-yellow-500 text-black rounded-lg hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all text-center flex items-center justify-center gap-1">
+                                    <i class="fab fa-whatsapp"></i> Commander
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================
+             VIDEO SECTION - NOUVELLE ✨
+        ============================= -->
+        <section id="video" class="py-24 bg-[#050505] relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#080810] to-[#050505]"></div>
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-deep-gold/5 rounded-full blur-[100px]"></div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="text-center mb-12 reveal">
+                    <span class="inline-block py-1 px-4 border border-deep-gold/30 rounded-full text-deep-gold text-xs tracking-widest uppercase mb-4">✦ Découvrez-nous ✦</span>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4">
+                        Notre <span class="text-gradient-gold">Vision</span>
+                    </h2>
+                    <p class="text-gray-400 max-w-xl mx-auto">
+                        Plongez dans l'univers Digital Queen Studio.
+                    </p>
+                </div>
+
+                <div class="reveal max-w-4xl mx-auto">
+                    <div class="video-wrapper">
+                        <!-- Vidéo responsive avec placeholder intelligent -->
+                        <video 
+                            class="w-full aspect-video rounded-2xl outline-none"
+                            controls 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline
+                            poster="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop"
+                            aria-label="Vidéo de présentation Digital Queen Studio"
+                        >
+                            <source src="Publicité Digital Queen Studio_720p.mp4" type="video/mp4">
+                            <p class="text-gray-400 text-center p-8">
+                                Votre navigateur ne supporte pas la lecture de vidéos. 
+                                <a href="votre-video-promo.mp4" class="text-deep-gold underline hover:text-light-gold transition-colors" download>
+                                    Télécharger la vidéo
+                                </a>
+                            </p>
+                        </video>
+                    </div>
+
+                    <!-- Call-to-Action sous la vidéo -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="https://wa.me/2250160894865?text=Bonjour%2C%20j'ai%20regardé%20votre%20vidéo%20et%20je%20souhaite%20en%20savoir%20plus." 
+                           target="_blank" 
+                           class="flex items-center gap-2 justify-center px-8 py-4 bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-full hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] transition-all btn-shimmer">
+                            <i class="fab fa-whatsapp text-lg"></i> Nous contacter
+                        </a>
+                        <a href="#services" class="flex items-center gap-2 justify-center px-8 py-4 border border-deep-gold/40 text-deep-gold rounded-full hover:bg-deep-gold/10 transition-colors">
+                            Voir nos services <i class="fas fa-arrow-down ml-1"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -367,56 +727,64 @@
 
         <!-- Contact Section -->
         <section id="contact" class="py-24 bg-[#050505] relative overflow-hidden">
-            <!-- Decorative Glow -->
             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-deep-gold/5 rounded-full filter blur-[100px]"></div>
+            <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-900/10 rounded-full filter blur-[80px]"></div>
 
             <div class="container mx-auto px-6 relative z-10">
                 <div class="max-w-4xl mx-auto glass-card rounded-3xl p-8 md:p-12 border border-white/5">
-                    <div class="text-center mb-10">
-                        <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Contactez la <span class="text-deep-gold">Reine</span></h2>
+                    <div class="text-center mb-10 reveal">
+                        <span class="inline-block py-1 px-4 border border-deep-gold/30 rounded-full text-deep-gold text-xs tracking-widest uppercase mb-4">✦ Parlons de votre projet ✦</span>
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold mb-3">
+                            Contactez la <span class="text-gradient-gold">Reine</span>
+                        </h2>
                         <p class="text-gray-400">Prêt à lancer votre projet ? Écrivez-nous.</p>
                     </div>
 
-                    <!-- FORMULAIRE CORRIGÉ - ID ajouté, pas d'action, pas de méthode -->
-                    <form id="contact-form" class="space-y-6" novalidate>
+                    <form id="contact-form" class="space-y-6 reveal" novalidate>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="space-y-2">
-                                <label class="text-sm text-gray-400 uppercase tracking-wider">Nom Complet</label>
-                                <input type="text" id="contact-name" name="from_name" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="Votre nom">
+                                <label class="text-xs text-gray-400 uppercase tracking-wider">Nom Complet</label>
+                                <input type="text" id="contact-name" name="from_name" required
+                                    class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600"
+                                    placeholder="Votre nom">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm text-gray-400 uppercase tracking-wider">Email</label>
-                                <input type="email" id="contact-email" name="from_email" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="votre@email.com">
+                                <label class="text-xs text-gray-400 uppercase tracking-wider">Email</label>
+                                <input type="email" id="contact-email" name="from_email" required
+                                    class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600"
+                                    placeholder="votre@email.com">
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm text-gray-400 uppercase tracking-wider">Message</label>
-                            <textarea rows="4" id="contact-message" name="message" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600" placeholder="Parlez-nous de votre projet..."></textarea>
+                            <label class="text-xs text-gray-400 uppercase tracking-wider">Message</label>
+                            <textarea rows="4" id="contact-message" name="message" required
+                                class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-deep-gold focus:ring-1 focus:ring-deep-gold transition-all text-white placeholder-gray-600"
+                                placeholder="Parlez-nous de votre projet..."></textarea>
                         </div>
                         
-                        <!-- Bouton avec état de chargement -->
-                        <button type="submit" id="submit-btn" class="w-full py-4 bg-gradient-to-r from-deep-gold to-yellow-600 text-black font-bold rounded-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center gap-2">
-                            <span id="btn-text">Envoyer le message</span>
+                        <button type="submit" id="submit-btn" 
+                                class="w-full py-4 bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-xl hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center gap-2 btn-shimmer">
+                            <span id="btn-text">✉️ Envoyer le message</span>
                             <span id="btn-spinner" class="spinner hidden"></span>
                         </button>
                     </form>
 
-                    <div class="mt-10 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-deep-gold">
+                    <div class="mt-10 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 reveal">
+                        <a href="https://wa.me/2250160894865" target="_blank" class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-green-400 group-hover:bg-green-400/10 transition-colors">
                                 <i class="fab fa-whatsapp text-2xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-400">Discussion directe</p>
-                                <a href="https://wa.me/2250160894865" class="font-bold hover:text-deep-gold transition-colors">+225 0160894865</a>
+                                <p class="text-xs text-gray-400 uppercase tracking-wider">Discussion directe</p>
+                                <p class="font-bold group-hover:text-deep-gold transition-colors">+225 0160 894 865</p>
                             </div>
-                        </div>
+                        </a>
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-deep-gold">
                                 <i class="fas fa-envelope text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-400">Email</p>
+                                <p class="text-xs text-gray-400 uppercase tracking-wider">Email</p>
                                 <p class="font-bold">contact@digitalqueenstudio.com</p>
                             </div>
                         </div>
@@ -428,239 +796,347 @@
         <!-- Footer -->
         <footer class="bg-black py-10 border-t border-white/10">
             <div class="container mx-auto px-6 text-center">
-                <div class="flex justify-center items-center gap-2 mb-6">
-                    <img src="file_000000003adc7246b413ea38de9b081a (1).png" alt="Logo Footer" class="h-8 w-8 object-contain opacity-80">
-                    <span class="font-serif text-lg font-bold text-gray-300">Digital Queen Studio</span>
+                <div class="flex justify-center items-center gap-3 mb-6">
+                    <div class="logo-float">
+                        <img src="logodigitalqueen.png" 
+                             alt="Logo Footer" 
+                             class="h-8 w-8 object-contain opacity-80">
+                    </div>
+                    <span class="font-serif text-lg font-bold text-gradient-gold">Digital Queen Studio</span>
                 </div>
                 <p class="text-gray-500 text-sm mb-6">
-                    &copy; 2026 Digital Queen Studio. Tous droits réservés.
+                    &copy; 2026 Digital Queen Studio. Tous droits réservés. — L'Excellence Digitale
                 </p>
                 <div class="flex justify-center gap-6">
-                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-deep-gold transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-500 hover:text-deep-gold hover:border-deep-gold/50 transition-all"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-500 hover:text-deep-gold hover:border-deep-gold/50 transition-all"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-500 hover:text-deep-gold hover:border-deep-gold/50 transition-all"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/2250160894865" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-500 hover:text-green-400 hover:border-green-400/50 transition-all"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
         </footer>
 
     </main>
 
-    <!-- JavaScript Logic -->
+    <!-- ============================
+         MODALS DE TARIFS - NOUVEAUX ✨
+    ============================= -->
+    
+    <!-- Modal: Création de Logo -->
+    <div id="modal-logo" class="modal-overlay" onclick="closeModal(event, 'logo')">
+        <div class="modal-box">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <span class="text-deep-gold text-xs uppercase tracking-widest">Tarifs</span>
+                    <h3 class="text-2xl font-serif font-bold mt-1">Création de Logo</h3>
+                </div>
+                <button onclick="closeModalById('logo')" class="text-gray-500 hover:text-white transition-colors text-xl" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-1 mb-8">
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Essentiel</p>
+                        <p class="text-gray-500 text-sm">1 concept + 2 retouches</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">15 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Standard</p>
+                        <p class="text-gray-500 text-sm">3 concepts + 5 retouches + formats HD</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">35 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Premium ✦</p>
+                        <p class="text-gray-500 text-sm">5 concepts + retouches illimitées + charte</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">75 000 FCFA</span>
+                </div>
+            </div>
+            <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Création%20de%20Logo." 
+               target="_blank" 
+               class="block w-full py-3 text-center bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all btn-shimmer">
+                <i class="fab fa-whatsapp mr-2"></i> Commander sur WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal: Création de Site Web -->
+    <div id="modal-web" class="modal-overlay" onclick="closeModal(event, 'web')">
+        <div class="modal-box">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <span class="text-deep-gold text-xs uppercase tracking-widest">Tarifs</span>
+                    <h3 class="text-2xl font-serif font-bold mt-1">Création de Site Web</h3>
+                </div>
+                <button onclick="closeModalById('web')" class="text-gray-500 hover:text-white transition-colors text-xl" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-1 mb-8">
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Vitrine</p>
+                        <p class="text-gray-500 text-sm">Site 3-5 pages + responsive + SEO</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">150 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Business</p>
+                        <p class="text-gray-500 text-sm">Site 10 pages + blog + formulaire</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">300 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">E-Commerce ✦</p>
+                        <p class="text-gray-500 text-sm">Boutique complète + paiement + gestion</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">500 000 FCFA</span>
+                </div>
+            </div>
+            <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Création%20de%20Site%20Web." 
+               target="_blank" 
+               class="block w-full py-3 text-center bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all btn-shimmer">
+                <i class="fab fa-whatsapp mr-2"></i> Commander sur WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal: Branding & Identité Visuelle -->
+    <div id="modal-branding" class="modal-overlay" onclick="closeModal(event, 'branding')">
+        <div class="modal-box">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <span class="text-deep-gold text-xs uppercase tracking-widest">Tarifs</span>
+                    <h3 class="text-2xl font-serif font-bold mt-1">Branding & Identité Visuelle</h3>
+                </div>
+                <button onclick="closeModalById('branding')" class="text-gray-500 hover:text-white transition-colors text-xl" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-1 mb-8">
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Starter</p>
+                        <p class="text-gray-500 text-sm">Logo + couleurs + typographie</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">50 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Complet</p>
+                        <p class="text-gray-500 text-sm">Charte complète + templates réseaux</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">120 000 FCFA</span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Royal ✦</p>
+                        <p class="text-gray-500 text-sm">Branding 360° + guide de marque</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">250 000 FCFA</span>
+                </div>
+            </div>
+            <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Branding%20%26%20Identité%20Visuelle." 
+               target="_blank" 
+               class="block w-full py-3 text-center bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all btn-shimmer">
+                <i class="fab fa-whatsapp mr-2"></i> Commander sur WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal: Marketing Digital -->
+    <div id="modal-marketing" class="modal-overlay" onclick="closeModal(event, 'marketing')">
+        <div class="modal-box">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <span class="text-deep-gold text-xs uppercase tracking-widest">Tarifs</span>
+                    <h3 class="text-2xl font-serif font-bold mt-1">Marketing Digital</h3>
+                </div>
+                <button onclick="closeModalById('marketing')" class="text-gray-500 hover:text-white transition-colors text-xl" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-1 mb-8">
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Boost</p>
+                        <p class="text-gray-500 text-sm">Gestion RS + 10 posts/mois</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">40 000 FCFA<span class="text-xs text-gray-500">/mois</span></span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Croissance</p>
+                        <p class="text-gray-500 text-sm">RS + pub Meta/Google + rapports</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">90 000 FCFA<span class="text-xs text-gray-500">/mois</span></span>
+                </div>
+                <div class="price-item">
+                    <div>
+                        <p class="font-bold">Domination ✦</p>
+                        <p class="text-gray-500 text-sm">Stratégie complète + campagnes illimitées</p>
+                    </div>
+                    <span class="text-deep-gold font-bold text-lg">200 000 FCFA<span class="text-xs text-gray-500">/mois</span></span>
+                </div>
+            </div>
+            <a href="https://wa.me/2250160894865?text=Bonjour%2C%20je%20souhaite%20commander%20le%20service%20Marketing%20Digital." 
+               target="_blank" 
+               class="block w-full py-3 text-center bg-gradient-to-r from-deep-gold to-yellow-500 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all btn-shimmer">
+                <i class="fab fa-whatsapp mr-2"></i> Commander sur WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================
+         JAVASCRIPT
+    ============================= -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-            // ==========================================
-            // 1. INITIALISATION EMAILJS
-            // Remplacez "YOUR_PUBLIC_KEY" par votre clé publique EmailJS
-            // ==========================================
-            emailjs.init("lHM2RrC0cYnSy36Mz");
+        // --- EMAILJS INIT ---
+        emailjs.init("lHM2RrC0cYnSy36Mz");
 
-            // ==========================================
-            // 2. INTRO SCREEN LOGIC
-            // ==========================================
-            const enterBtn = document.getElementById('enter-btn');
-            const introScreen = document.getElementById('intro-screen');
-            const mainSite = document.getElementById('main-site');
+        // --- INTRO SCREEN ---
+        const enterBtn = document.getElementById('enter-btn');
+        const introScreen = document.getElementById('intro-screen');
+        const mainSite = document.getElementById('main-site');
 
-            enterBtn.addEventListener('click', () => {
-                // Fade out intro screen
-                introScreen.classList.add('fade-out');
-                
-                // Show main site with fade in
-                setTimeout(() => {
-                    mainSite.classList.remove('opacity-0');
-                    // Remove intro from DOM after transition to save resources
-                    setTimeout(() => {
-                        introScreen.style.display = 'none';
-                    }, 1000);
-                }, 500);
-            });
+        enterBtn.addEventListener('click', () => {
+            introScreen.classList.add('fade-out');
+            setTimeout(() => {
+                mainSite.style.opacity = '1';
+                setTimeout(() => { introScreen.style.display = 'none'; }, 1000);
+            }, 500);
+        });
 
-            // ==========================================
-            // 3. SCROLL REVEAL ANIMATION
-            // ==========================================
-            const revealElements = document.querySelectorAll('.reveal');
-
-            const revealOnScroll = () => {
-                const windowHeight = window.innerHeight;
-                const elementVisible = 150;
-
-                revealElements.forEach((reveal) => {
-                    const elementTop = reveal.getBoundingClientRect().top;
-                    if (elementTop < windowHeight - elementVisible) {
-                        reveal.classList.add('active');
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', revealOnScroll);
-            // Trigger once on load
-            revealOnScroll();
-
-            // ==========================================
-            // 4. MOBILE MENU TOGGLE
-            // ==========================================
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                // Toggle icon between bars and times
-                const icon = mobileBtn.querySelector('i');
-                if (mobileMenu.classList.contains('hidden')) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                } else {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
+        // --- SCROLL REVEAL ---
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            reveals.forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 120) {
+                    el.classList.add('active');
                 }
             });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
 
-            // Close mobile menu when clicking a link
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    const icon = mobileBtn.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                });
-            });
-
-            // ==========================================
-            // 5. NAVBAR BACKGROUND ON SCROLL
-            // ==========================================
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('bg-black/90', 'shadow-lg');
-                } else {
-                    navbar.classList.remove('bg-black/90', 'shadow-lg');
-                }
-            });
-
-            // ==========================================
-            // 6. FORMULAIRE DE CONTACT - EMAILJS
-            // Envoi AJAX sans rechargement ni redirection
-            // ==========================================
-            const contactForm = document.getElementById('contact-form');
-            const submitBtn = document.getElementById('submit-btn');
-            const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
-            const toast = document.getElementById('toast');
-
-            // Fonction pour afficher les notifications toast
-            function showToast(message, type = 'success') {
-                toast.textContent = message;
-                toast.className = `toast ${type} show`;
-                
-                // Masquer après 4 secondes
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 4000);
-            }
-
-            // Validation des champs du formulaire
-            function validateForm() {
-                const name = document.getElementById('contact-name');
-                const email = document.getElementById('contact-email');
-                const message = document.getElementById('contact-message');
-                let isValid = true;
-
-                // Reset styles
-                [name, email, message].forEach(field => {
-                    field.classList.remove('form-error');
-                });
-
-                if (!name.value.trim()) {
-                    name.classList.add('form-error');
-                    isValid = false;
-                }
-
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email.value.trim())) {
-                    email.classList.add('form-error');
-                    isValid = false;
-                }
-
-                if (!message.value.trim()) {
-                    message.classList.add('form-error');
-                    isValid = false;
-                }
-
-                return isValid;
-            }
-
-            // Gestion de la soumission du formulaire
-            contactForm.addEventListener('submit', function(e) {
-                // IMPORTANT: Empêche le rechargement de la page
-                e.preventDefault();
-
-                // Validation des champs
-                if (!validateForm()) {
-                    showToast('Veuillez remplir tous les champs correctement.', 'error');
-                    return;
-                }
-
-                // Afficher le chargement
-                btnText.textContent = 'Envoi en cours...';
-                btnSpinner.classList.remove('hidden');
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
-
-                // Envoi via EmailJS
-                // Remplacez "YOUR_SERVICE_ID" et "YOUR_TEMPLATE_ID" par vos identifiants EmailJS
-                emailjs.sendForm("service_w7fu23d", "template_7by1f3d", this)
-                    .then(() => {
-                        // Succès
-                        showToast('✅ Message envoyé avec succès ! Nous vous répondrons bientôt.', 'success');
-                        contactForm.reset();
-                        
-                        // Reset styles
-                        document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(field => {
-                            field.classList.remove('form-success', 'form-error');
-                        });
-                    })
-                    .catch((error) => {
-                        // Erreur
-                        console.error('EmailJS Error:', error);
-                        showToast('❌ Erreur lors de l\'envoi. Veuillez réessayer.', 'error');
-                    })
-                    .finally(() => {
-                        // Rétablir le bouton
-                        btnText.textContent = 'Envoyer le message';
-                        btnSpinner.classList.add('hidden');
-                        submitBtn.disabled = false;
-                        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-                    });
-            });
-
-            // Supprimer les styles d'erreur quand l'utilisateur commence à taper
-            document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(field => {
-                field.addEventListener('input', () => {
-                    field.classList.remove('form-error');
-                });
-            });
-
-            // ==========================================
-            // 7. SMOOTH SCROLL POUR LES LIENS INTERNES
-            // ==========================================
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
+        // --- MOBILE MENU ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileBtn.querySelector('i');
+            icon.className = mobileMenu.classList.contains('hidden') ? 'fas fa-bars' : 'fas fa-times';
+        });
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileBtn.querySelector('i').className = 'fas fa-bars';
             });
         });
+
+        // --- NAVBAR SCROLL EFFECT ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('bg-black/90', window.scrollY > 50);
+            navbar.classList.toggle('shadow-lg', window.scrollY > 50);
+        });
+
+        // --- CONTACT FORM WITH EMAILJS ---
+        const form = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const toast = document.getElementById('toast');
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        function validateForm() {
+            const name = document.getElementById('contact-name');
+            const email = document.getElementById('contact-email');
+            const message = document.getElementById('contact-message');
+            let valid = true;
+            [name, email, message].forEach(f => f.classList.remove('form-error'));
+            if (!name.value.trim()) { name.classList.add('form-error'); valid = false; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { email.classList.add('form-error'); valid = false; }
+            if (!message.value.trim()) { message.classList.add('form-error'); valid = false; }
+            return valid;
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateForm()) { showToast('Veuillez remplir tous les champs correctement.', 'error'); return; }
+            
+            btnText.textContent = 'Envoi en cours...';
+            btnSpinner.classList.remove('hidden');
+            submitBtn.disabled = true; 
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            
+            emailjs.sendForm("service_w7fu23d", "template_7by1f3d", this)
+                .then(() => {
+                    showToast('✅ Message envoyé ! Nous vous répondrons bientôt.', 'success');
+                    form.reset();
+                })
+                .catch(err => {
+                    console.error('EmailJS Error:', err);
+                    showToast('❌ Erreur lors de l\'envoi. Réessayez.', 'error');
+                })
+                .finally(() => {
+                    btnText.textContent = '✉️ Envoyer le message';
+                    btnSpinner.classList.add('hidden');
+                    submitBtn.disabled = false; 
+                    submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                });
+        });
+
+        // Clear error states on input
+        document.querySelectorAll('#contact-form input, #contact-form textarea').forEach(f => {
+            f.addEventListener('input', () => f.classList.remove('form-error'));
+        });
+
+        // --- SMOOTH SCROLL ---
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const t = this.getAttribute('href');
+                if (t === '#') return;
+                document.querySelector(t)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // --- ESCAPE KEY TO CLOSE MODALS ---
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+            }
+        });
+    });
+
+    // --- MODAL FUNCTIONS ---
+    function openModal(id) {
+        document.getElementById('modal-' + id).classList.add('open');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+    function closeModalById(id) {
+        document.getElementById('modal-' + id).classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function closeModal(event, id) {
+        if (event.target === event.currentTarget) closeModalById(id);
+    }
     </script>
+
 </body>
 </html>
-
