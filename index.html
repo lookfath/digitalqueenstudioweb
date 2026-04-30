@@ -1373,7 +1373,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.addEventListener('DOMContentLoaded', () => {
 
         // --- EMAILJS INIT ---
-        emailjs.init("lHM2RrC0cYnSy36Mz");
+        emailjs.init({
+    publicKey: "lHM2RrC0cYnSy36Mz",
+});
 
         // --- INTRO SCREEN ---
         const enterBtn = document.getElementById('enter-btn');
