@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 erreurs fatales sur votre site web — Digital Queen Studio</title>
+    <link rel="icon" type="image/png" href="logodigitalqueen.png">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/400.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5/700.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --noir: #0a0a0a;
+            --noir-light: #111111;
+            --or: #c9a84c;
+            --or-light: #e2c97e;
+            --or-dark: #a88a3a;
+            --blanc: #f5f0e8;
+            --blanc-pur: #ffffff;
+            --gris: #888888;
+            --gris-light: #cccccc;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--noir);
+            color: var(--blanc);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled { padding: 0.8rem 2.5rem; }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            color: var(--or);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-brand span { color: var(--blanc); font-weight: 400; }
+
+        .nav-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--or);
+            border-radius: 50px;
+            color: var(--or);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-contact:hover {
+            background: var(--or);
+            color: var(--noir);
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            min-height: 450px;
+            overflow: hidden;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6) saturate(1.1);
+            transition: transform 8s ease;
+        }
+
+        .hero:hover .hero-img { transform: scale(1.03); }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(10,10,10,0.2) 0%,
+                rgba(10,10,10,0.1) 40%,
+                rgba(10,10,10,0.7) 80%,
+                rgba(10,10,10,1) 100%
+            );
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 0 2.5rem 4rem;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: rgba(201, 168, 76, 0.15);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            border-radius: 50px;
+            color: var(--or);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--blanc-pur);
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-title em {
+            color: var(--or);
+            font-style: normal;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--gris-light);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .article-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 4rem 2rem 5rem;
+        }
+
+        .article-intro {
+            font-size: 1.15rem;
+            color: var(--gris-light);
+            line-height: 1.9;
+            margin-bottom: 3.5rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+        }
+
+        .article-intro strong {
+            color: var(--blanc-pur);
+            font-weight: 500;
+        }
+
+        .article-intro ul {
+            list-style: none;
+            margin: 1.5rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .article-intro ul li {
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.98rem;
+            color: var(--or-light);
+            font-weight: 500;
+        }
+
+        .article-intro ul li::before {
+            content: '✕';
+            position: absolute;
+            left: 0;
+            color: var(--or);
+            font-weight: 700;
+        }
+
+        .section { margin-bottom: 3.5rem; }
+
+        .section-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: var(--or);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--blanc-pur);
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+        }
+
+        .section p {
+            font-size: 0.98rem;
+            color: var(--gris-light);
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .choc-section {
+            position: relative;
+            margin: 4rem 0;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), rgba(201, 168, 76, 0.02));
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            border-radius: 2px;
+        }
+
+        .choc-section::before {
+            content: '"';
+            position: absolute;
+            top: -0.5rem;
+            left: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--or);
+            opacity: 0.25;
+            line-height: 1;
+        }
+
+        .choc-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem;
+            font-style: italic;
+            color: var(--or-light);
+            line-height: 1.6;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .choc-author {
+            margin-top: 1.2rem;
+            font-size: 0.78rem;
+            color: var(--gris);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .conclusion {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(201, 168, 76, 0.15);
+        }
+
+        .conclusion p {
+            font-size: 1.05rem;
+            color: var(--gris-light);
+            line-height: 1.85;
+        }
+
+        .conclusion strong { color: var(--blanc-pur); font-weight: 500; }
+
+        .cta-block {
+            margin-top: 3.5rem;
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--noir-light);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 2px;
+        }
+
+        .cta-label {
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gris);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.1rem 2.8rem;
+            background: linear-gradient(135deg, var(--or), var(--or-dark));
+            color: var(--noir);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 25px rgba(201, 168, 76, 0.25);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(201, 168, 76, 0.4);
+        }
+
+        .cta-button svg { width: 20px; height: 20px; }
+
+        .cta-note {
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: var(--gris);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--or);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer p {
+            font-size: 0.78rem;
+            color: var(--gris);
+            letter-spacing: 1px;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 1.5rem; }
+            .nav-contact span { display: none; }
+            .hero { height: 55vh; min-height: 380px; }
+            .hero-content { padding: 0 1.5rem 3rem; }
+            .article-wrapper { padding: 3rem 1.5rem 4rem; }
+            .article-intro ul { grid-template-columns: 1fr; }
+            .choc-section { padding: 2.5rem 1.5rem; }
+            .cta-block { padding: 2.5rem 1.5rem; }
+            .cta-button { padding: 1rem 2.2rem; font-size: 0.88rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-brand">Digital Queen <span>Studio</span></a>
+        <a href="https://wa.me/2250700000000?text=Bonjour%20Digital%20Queen%20Studio%20je%20veux%20un%20site%20web" class="nav-contact" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <header class="hero">
+        <img src="https://image.qwenlm.ai/public_source/7949aa89-67f4-4b5e-be3c-603b9527a21a/11e6c6b2f-48f5-4f30-998b-8ce0afbab32c.png" alt="Erreur site web premium" class="hero-img">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-tag">Article — 2026</span>
+            <h1 class="hero-title">5 erreurs fatales sur votre site web<br>qui font <em>fuire vos clients</em></h1>
+            <p class="hero-subtitle">Un site lent, mal conçu ou non optimisé ne vous coûte pas seulement de la visibilité. Il vous coûte des ventes, chaque jour.</p>
+        </div>
+    </header>
+
+    <main class="article-wrapper">
+
+        <div class="article-intro fade-up">
+            <p>
+                En 2026, vos clients africains sont de plus en plus exigeants. Ils jugent votre crédibilité en <strong>3 secondes</strong>. Si votre site souffre de l'une de ces 5 erreurs, ils partent chez la concurrence et ne reviennent jamais :
+            </p>
+            <ul>
+                <li>Design amateur et non responsive</li>
+                <li>Temps de chargement trop lent</li>
+                <li>Navigation confuse et illisible</li>
+                <li>Appels à l'action absents ou faibles</li>
+                <li>Contenu non adapté au marché local</li>
+            </ul>
+            <p>
+                <strong>Ces erreurs sont silencieuses, mais mortelles pour votre business.</strong> Heureusement, elles se corrigent rapidement avec une stratégie digitale professionnelle.
+            </p>
+        </div>
+
+        <section class="section fade-up">
+            <span class="section-number">01 — Indispensable</span>
+            <h2>Pourquoi un site web est indispensable en 2026</h2>
+            <p>
+                Avoir un site web ne suffit plus. Il doit être <strong>irréprochable</strong>. En Afrique, le digital est devenu le premier terrain de confiance. Un site bien conçu élimine les doutes, positionne votre marque comme leader et rassure avant même le premier contact.
+            </p>
+            <p>
+                Sans une base digitale solide, vos efforts marketing partent en fumée. Un site professionnel est le socle de toute croissance durable.
+            </p>
+        </section>
+
+        <section class="section fade-up">
+            <span class="section-number">02 — Avantages</span>
+            <h2>Les avantages pour une entreprise</h2>
+            <p>
+                Corriger ces 5 erreurs transforme votre site en un véritable actif commercial :
+            </p>
+            <p>
+                <strong>Confiance immédiate :</strong> Un design premium et une expérience fluide prouvent votre sérieux.<br>
+                <strong>Gain de temps :</strong> Les visiteurs trouvent ce qu'ils cherchent et vous contactent directement.<br>
+                <strong>Différenciation :</strong> Vous vous démarquez des 80% des entreprises locales qui négligent leur présence digitale.<br>
+                <strong>Contrôle total :</strong> Votre site vous appartient, contrairement aux algorithmes changeants des réseaux sociaux.
+            </p>
+        </section>
+
+        <section class="section fade-up">
+            <span class="section-number">03 — Impact</span>
+            <h2>Impact sur les clients et les ventes</h2>
+            <p>
+                Chaque seconde de chargement perdue, chaque bouton mal placé, chaque texte confus = <strong>un client perdu définitivement</strong>. 
+            </p>
+            <p>
+                Un site optimisé convertit les visiteurs en leads, les leads en clients, et les clients en ambassadeurs. L'impact est direct : <strong>plus de demandes, plus de ventes, moins de frictions</strong>. Votre site devient votre meilleur commercial, disponible 24h/24.
+            </p>
+        </section>
+
+        <div class="choc-section fade-up">
+            <p class="choc-text">
+                Vos concurrents ne sont pas meilleurs que vous.<br>
+                Ils ont simplement un site web qui <strong>convertit</strong>.<br>
+                Et vous ?
+            </p>
+            <p class="choc-author">— Digital Queen Studio</p>
+        </div>
+
+        <div class="conclusion fade-up">
+            <p>
+                <strong>Ne laissez plus des erreurs évitables couler votre business.</strong> Chez Digital Queen Studio, nous créons des sites web élégants, rapides et pensés pour vendre. Votre prochaine étape commence par un message.
+            </p>
+        </div>
+
+        <div class="cta-block fade-up">
+            <p class="cta-label">Prêt à transformer votre présence digitale ?</p>
+            <a href="https://wa.me/2250700000000?text=Bonjour%20Digital%20Queen%20Studio%20je%20veux%20un%20site%20web" class="cta-button" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Créer mon site web professionnel
+            </a>
+            <p class="cta-note">Réponse garantie en moins de 2 heures sur WhatsApp</p>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p class="footer-brand">Digital Queen Studio</p>
+        <p>Création de sites web · Branding · Accompagnement stratégique</p>
+        <p style="margin-top: 1.5rem; font-size: 0.7rem; color: #555;">© 2026 — Tous droits réservés</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+    </script>
+
+</body>
+</html>
+
